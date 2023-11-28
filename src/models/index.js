@@ -19,3 +19,9 @@ Favorite.belongsTo(News);
 
 User.hasMany(Favorite);
 Favorite.belongsTo(User);
+
+
+const { quantity, productId, userId } = product
+return { quantity, productId, userId } 
+
+
