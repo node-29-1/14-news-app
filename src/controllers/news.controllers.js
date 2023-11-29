@@ -2,9 +2,18 @@ const catchError = require('../utils/catchError');
 const News = require('../models/News');
 const Category = require('../models/Category');
 const Image = require('../models/Image');
+const { Op } = require('sequelize');
 
 const getAll = catchError(async(req, res) => {
-    const results = await News.findAll({ include: [Category, Image] });
+    const { category, headline__icontains } = req.query;
+    const where = {};
+    if (headline__icontains) where.headline = { [Op.iLike]: `%${headline__icontains}%`}
+    if (category) where.categoryId = category;
+    
+    const results = await News.findAll({ 
+        include: [Category, Image],
+        where: where,
+    });
     return res.json(results);
 });
 
